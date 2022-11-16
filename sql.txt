@@ -1,0 +1,87 @@
+DROP DATABASE IF EXISTS CharacterSheet;
+CREATE DATABASE CharacterSheet;
+USE CharacterSheet;
+
+CREATE TABLE CharacterInfo
+(
+	char_id INT NOT NULL AUTO_INCREMENT,
+    CONSTRAINT pk_type PRIMARY KEY (char_id),
+    name VARCHAR(50),
+	speed INT,
+    hp INT,
+    ac INT,
+    hit_dice INT,
+    lvl INT
+);
+
+CREATE TABLE Stats
+(
+	char_id INT NOT NULL,
+    CONSTRAINT pk_type PRIMARY KEY (char_id),
+    FOREIGN KEY (char_id) REFERENCES CharacterInfo (char_id),
+    str INT NOT NULL,
+    dex INT NOT NULL,
+    con INT NOT NULL,
+    intel INT NOT NULL,
+    wis INT NOT NULL,
+    cha INT NOT NULL
+);
+
+CREATE TABLE Proficiencies
+(
+	char_id INT NOT NULL,
+    CONSTRAINT pk_type PRIMARY KEY (char_id),
+    FOREIGN KEY (char_id) REFERENCES CharacterInfo (char_id)
+);
+
+CREATE TABLE Race
+(
+	char_id INT NOT NULL,
+    CONSTRAINT pk_type PRIMARY KEY (char_id),
+    FOREIGN KEY (char_id) REFERENCES CharacterInfo (char_id),
+    name VARCHAR(20),
+    sub vARCHAR(20),
+    mainFeat VARCHAR(255),
+    subFeat VARCHAR(255)
+);
+
+CREATE TABLE Item
+(
+	type_id INT NOT NULL AUTO_INCREMENT,
+    CONSTRAINT pk_type PRIMARY KEY (type_id),
+    char_id INT NOT NULL,
+    FOREIGN KEY (char_id) REFERENCES CharacterInfo (char_id),
+    name VARCHAR(50),
+    description VARCHAR(255)
+);
+
+CREATE TABLE Weapon
+(
+	type_id INT NOT NULL,
+    CONSTRAINT pk_type PRIMARY KEY (type_id),
+    FOREIGN KEY (type_id) REFERENCES Item (type_id),
+    rng INT NOT NULL DEFAULT 5, 
+    dmg VARCHAR(10) DEFAULT "1d4",
+    str BOOL DEFAULT FALSE,
+    dex BOOL DEFAULT FALSE
+);
+
+CREATE TABLE Spells
+(
+	char_id INT NOT NULL,
+    CONSTRAINT pk_type PRIMARY KEY (char_id),
+    FOREIGN KEY (char_id) REFERENCES CharacterInfo (char_id),
+    name VARCHAR(50),
+    rng INT NOT NULL DEFAULT 5, 
+    description VARCHAR(255),
+    dmg VARCHAR(10) DEFAULT "1d4"
+);
+
+CREATE TABLE Class
+(
+	class_id INT NOT NULL AUTO_INCREMENT,
+	CONSTRAINT pk_type PRIMARY KEY (class_id),
+    char_id INT DEFAULT 0,
+	FOREIGN KEY (char_id) REFERENCES CharacterInfo (char_id),
+	name VARCHAR(50)
+);

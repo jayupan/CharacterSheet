@@ -1,0 +1,15 @@
+@Bean
+        public RestTemplate restTemplate(RestTemplateBuilder builder)
+        {
+            return builder.build();
+        }
+        
+        @Bean
+        public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
+            return args-> {
+                Class cla = restTemplate.getForObject("https://www.dnd5eapi.co/api/classes/cleric", Class.class);
+                log.info(cla.toString());
+                System.out.println("Hello world");
+                System.out.println(cla.toString());
+            };
+        }
